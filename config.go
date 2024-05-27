@@ -2,7 +2,7 @@ package gotracing
 
 type config struct {
 	maxLevel levelFilter
-	maxPC    int
+	maxPC    uint
 }
 
 var conf = config{
@@ -14,6 +14,6 @@ func SetMaxLevel(level levelFilter) {
 	conf.maxLevel = level
 }
 
-func SetMaxProgramCounters(count int) {
+func SetMaxProgramCounters(count uint) {
 	conf.maxPC = count
 }

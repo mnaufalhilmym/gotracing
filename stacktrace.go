@@ -7,14 +7,14 @@ import (
 )
 
 type stacktrace struct {
-	msg  string
+	msg  []any
 	file string
 	fn   string
 	line int
 }
 
-func traceStack(msg string) []stacktrace {
-	pcs := make([]uintptr, conf.maxPC)
+func traceStack(maxPC uint, msg ...any) []stacktrace {
+	pcs := make([]uintptr, maxPC)
 	pcEntries := runtime.Callers(3, pcs)
 	if pcEntries == 0 {
 		return nil
@@ -56,8 +56,9 @@ func printStack(l level, st []stacktrace) {
 		kind += termColorRed + "ERROR" + termColorReset
 	}
 	for i, s := range st {
-		if s.msg != "" {
-			fmt.Printf("%s %s: %s\n", termColorComment+time.Now().Format(time.RFC3339)+termColorReset, kind, s.msg)
+		if s.msg != nil {
+			fmt.Printf("%s  %s: ", termColorComment+time.Now().Format(time.RFC3339)+termColorReset, kind)
+			fmt.Println(s.msg...)
 		}
 		fmt.Printf("  %d\tfunc: %s\n\tat %s:%d\n", i, s.fn, s.file, s.line)
 	}
