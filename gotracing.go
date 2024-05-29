@@ -13,7 +13,7 @@ func Trace(msg ...any) {
 
 	var stacktrace Stacktraces
 	if printStackTrace || storeStacktrace {
-		stacktrace = traceStack(conf.maxPC, newStacktraces(LevelTrace, msg...))
+		stacktrace = traceStack(conf.maxPC, Stacktraces{{level: LevelTrace, msg: msg}})
 	}
 
 	if printStackTrace {
@@ -33,7 +33,7 @@ func TraceWithMaxPC(maxPC uint, msg ...any) {
 
 	var stacktrace Stacktraces
 	if printStackTrace || storeStacktrace {
-		stacktrace = traceStack(maxPC, newStacktraces(LevelTrace, msg...))
+		stacktrace = traceStack(maxPC, Stacktraces{{level: LevelTrace, msg: msg}})
 	}
 
 	if printStackTrace {
@@ -53,7 +53,7 @@ func Debug(msg ...any) {
 
 	var stacktrace Stacktraces
 	if printStackTrace || storeStacktrace {
-		stacktrace = traceStack(conf.maxPC, newStacktraces(LevelDebug, msg...))
+		stacktrace = traceStack(conf.maxPC, Stacktraces{{level: LevelDebug, msg: msg}})
 	}
 
 	if printStackTrace {
@@ -73,7 +73,7 @@ func DebugWithMaxPC(maxPC uint, msg ...any) {
 
 	var stacktrace Stacktraces
 	if printStackTrace || storeStacktrace {
-		stacktrace = traceStack(maxPC, newStacktraces(LevelDebug, msg...))
+		stacktrace = traceStack(maxPC, Stacktraces{{level: LevelDebug, msg: msg}})
 	}
 
 	if printStackTrace {
@@ -93,7 +93,7 @@ func Info(msg ...any) {
 
 	var stacktrace Stacktraces
 	if printStackTrace || storeStacktrace {
-		stacktrace = traceStack(conf.maxPC, newStacktraces(LevelInfo, msg...))
+		stacktrace = traceStack(conf.maxPC, Stacktraces{{level: LevelInfo, msg: msg}})
 	}
 
 	if printStackTrace {
@@ -113,7 +113,7 @@ func InfoWithMaxPC(maxPC uint, msg ...any) {
 
 	var stacktrace Stacktraces
 	if printStackTrace || storeStacktrace {
-		stacktrace = traceStack(maxPC, newStacktraces(LevelInfo, msg...))
+		stacktrace = traceStack(maxPC, Stacktraces{{level: LevelInfo, msg: msg}})
 	}
 
 	if printStackTrace {
@@ -133,7 +133,7 @@ func Warn(msg ...any) {
 
 	var stacktrace Stacktraces
 	if printStackTrace || storeStacktrace {
-		stacktrace = traceStack(conf.maxPC, newStacktraces(LevelWarn, msg...))
+		stacktrace = traceStack(conf.maxPC, Stacktraces{{level: LevelWarn, msg: msg}})
 	}
 
 	if printStackTrace {
@@ -153,7 +153,7 @@ func WarnWithMaxPC(maxPC uint, msg ...any) {
 
 	var stacktrace Stacktraces
 	if printStackTrace || storeStacktrace {
-		stacktrace = traceStack(maxPC, newStacktraces(LevelWarn, msg...))
+		stacktrace = traceStack(maxPC, Stacktraces{{level: LevelWarn, msg: msg}})
 	}
 
 	if printStackTrace {
@@ -173,7 +173,7 @@ func Error(msg ...any) {
 
 	var stacktrace Stacktraces
 	if printStackTrace || storeStacktrace {
-		stacktrace = traceStack(conf.maxPC, newStacktraces(LevelError, msg...))
+		stacktrace = traceStack(conf.maxPC, Stacktraces{{level: LevelError, msg: msg}})
 	}
 
 	if printStackTrace {
@@ -193,7 +193,7 @@ func ErrorWithMaxPC(maxPC uint, msg ...any) {
 
 	var stacktrace Stacktraces
 	if printStackTrace || storeStacktrace {
-		stacktrace = traceStack(conf.maxPC, newStacktraces(LevelError, msg...))
+		stacktrace = traceStack(conf.maxPC, Stacktraces{{level: LevelError, msg: msg}})
 	}
 
 	if printStackTrace {
