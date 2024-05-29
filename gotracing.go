@@ -1,81 +1,208 @@
 package gotracing
 
+import (
+	"context"
+	"fmt"
+
+	"github.com/mnaufalhilmym/goasync"
+)
+
 func Trace(msg ...any) {
-	if !levelFilterTrace.le(conf.maxLevel) {
-		return
+	printStackTrace := LevelFilterTrace.ge(conf.minConsolePrintLevel)
+	storeStacktrace := LevelFilterTrace.ge(conf.minStoreLevel)
+
+	var stacktrace Stacktraces
+	if printStackTrace || storeStacktrace {
+		stacktrace = traceStack(conf.maxPC, newStacktraces(LevelTrace, msg...))
 	}
-	stacktrace := traceStack(conf.maxPC, msg...)
-	printStack(levelTrace, stacktrace)
+
+	if printStackTrace {
+		fmt.Println(stacktrace)
+	}
+	if storeStacktrace && conf.storage != nil {
+		goasync.Spawn(func(ctx context.Context) (any, error) {
+			conf.storage.Insert(LevelTrace, stacktrace)
+			return nil, nil
+		})
+	}
 }
 
 func TraceWithMaxPC(maxPC uint, msg ...any) {
-	if !levelFilterTrace.le(conf.maxLevel) {
-		return
+	printStackTrace := LevelFilterTrace.ge(conf.minConsolePrintLevel)
+	storeStacktrace := LevelFilterTrace.ge(conf.minStoreLevel)
+
+	var stacktrace Stacktraces
+	if printStackTrace || storeStacktrace {
+		stacktrace = traceStack(maxPC, newStacktraces(LevelTrace, msg...))
 	}
-	stacktrace := traceStack(maxPC, msg...)
-	printStack(levelTrace, stacktrace)
+
+	if printStackTrace {
+		fmt.Println(stacktrace)
+	}
+	if storeStacktrace && conf.storage != nil {
+		goasync.Spawn(func(ctx context.Context) (any, error) {
+			conf.storage.Insert(LevelTrace, stacktrace)
+			return nil, nil
+		})
+	}
 }
 
 func Debug(msg ...any) {
-	if !levelFilterDebug.le(conf.maxLevel) {
-		return
+	printStackTrace := LevelFilterDebug.ge(conf.minConsolePrintLevel)
+	storeStacktrace := LevelFilterDebug.ge(conf.minStoreLevel)
+
+	var stacktrace Stacktraces
+	if printStackTrace || storeStacktrace {
+		stacktrace = traceStack(conf.maxPC, newStacktraces(LevelDebug, msg...))
 	}
-	stacktrace := traceStack(conf.maxPC, msg...)
-	printStack(levelDebug, stacktrace)
+
+	if printStackTrace {
+		fmt.Println(stacktrace)
+	}
+	if storeStacktrace && conf.storage != nil {
+		goasync.Spawn(func(ctx context.Context) (any, error) {
+			conf.storage.Insert(LevelDebug, stacktrace)
+			return nil, nil
+		})
+	}
 }
 
 func DebugWithMaxPC(maxPC uint, msg ...any) {
-	if !levelFilterDebug.le(conf.maxLevel) {
-		return
+	printStackTrace := LevelFilterDebug.ge(conf.minConsolePrintLevel)
+	storeStacktrace := LevelFilterDebug.ge(conf.minStoreLevel)
+
+	var stacktrace Stacktraces
+	if printStackTrace || storeStacktrace {
+		stacktrace = traceStack(maxPC, newStacktraces(LevelDebug, msg...))
 	}
-	stacktrace := traceStack(maxPC, msg...)
-	printStack(levelDebug, stacktrace)
+
+	if printStackTrace {
+		fmt.Println(stacktrace)
+	}
+	if storeStacktrace && conf.storage != nil {
+		goasync.Spawn(func(ctx context.Context) (any, error) {
+			conf.storage.Insert(LevelDebug, stacktrace)
+			return nil, nil
+		})
+	}
 }
 
 func Info(msg ...any) {
-	if !levelFilterDebug.le(conf.maxLevel) {
-		return
+	printStackTrace := LevelFilterInfo.ge(conf.minConsolePrintLevel)
+	storeStacktrace := LevelFilterInfo.ge(conf.minStoreLevel)
+
+	var stacktrace Stacktraces
+	if printStackTrace || storeStacktrace {
+		stacktrace = traceStack(conf.maxPC, newStacktraces(LevelInfo, msg...))
 	}
-	stacktrace := traceStack(conf.maxPC, msg...)
-	printStack(levelInfo, stacktrace)
+
+	if printStackTrace {
+		fmt.Println(stacktrace)
+	}
+	if storeStacktrace && conf.storage != nil {
+		goasync.Spawn(func(ctx context.Context) (any, error) {
+			conf.storage.Insert(LevelInfo, stacktrace)
+			return nil, nil
+		})
+	}
 }
 
 func InfoWithMaxPC(maxPC uint, msg ...any) {
-	if !levelFilterDebug.le(conf.maxLevel) {
-		return
+	printStackTrace := LevelFilterInfo.ge(conf.minConsolePrintLevel)
+	storeStacktrace := LevelFilterInfo.ge(conf.minStoreLevel)
+
+	var stacktrace Stacktraces
+	if printStackTrace || storeStacktrace {
+		stacktrace = traceStack(maxPC, newStacktraces(LevelInfo, msg...))
 	}
-	stacktrace := traceStack(maxPC, msg...)
-	printStack(levelInfo, stacktrace)
+
+	if printStackTrace {
+		fmt.Println(stacktrace)
+	}
+	if storeStacktrace && conf.storage != nil {
+		goasync.Spawn(func(ctx context.Context) (any, error) {
+			conf.storage.Insert(LevelInfo, stacktrace)
+			return nil, nil
+		})
+	}
 }
 
 func Warn(msg ...any) {
-	if !levelFilterDebug.le(conf.maxLevel) {
-		return
+	printStackTrace := LevelFilterWarn.ge(conf.minConsolePrintLevel)
+	storeStacktrace := LevelFilterWarn.ge(conf.minStoreLevel)
+
+	var stacktrace Stacktraces
+	if printStackTrace || storeStacktrace {
+		stacktrace = traceStack(conf.maxPC, newStacktraces(LevelWarn, msg...))
 	}
-	stacktrace := traceStack(conf.maxPC, msg...)
-	printStack(levelWarn, stacktrace)
+
+	if printStackTrace {
+		fmt.Println(stacktrace)
+	}
+	if storeStacktrace && conf.storage != nil {
+		goasync.Spawn(func(ctx context.Context) (any, error) {
+			conf.storage.Insert(LevelWarn, stacktrace)
+			return nil, nil
+		})
+	}
 }
 
 func WarnWithMaxPC(maxPC uint, msg ...any) {
-	if !levelFilterDebug.le(conf.maxLevel) {
-		return
+	printStackTrace := LevelFilterWarn.ge(conf.minConsolePrintLevel)
+	storeStacktrace := LevelFilterWarn.ge(conf.minStoreLevel)
+
+	var stacktrace Stacktraces
+	if printStackTrace || storeStacktrace {
+		stacktrace = traceStack(maxPC, newStacktraces(LevelWarn, msg...))
 	}
-	stacktrace := traceStack(maxPC, msg...)
-	printStack(levelWarn, stacktrace)
+
+	if printStackTrace {
+		fmt.Println(stacktrace)
+	}
+	if storeStacktrace && conf.storage != nil {
+		goasync.Spawn(func(ctx context.Context) (any, error) {
+			conf.storage.Insert(LevelWarn, stacktrace)
+			return nil, nil
+		})
+	}
 }
 
 func Error(msg ...any) {
-	if !levelFilterDebug.le(conf.maxLevel) {
-		return
+	printStackTrace := LevelFilterError.ge(conf.minConsolePrintLevel)
+	storeStacktrace := LevelFilterError.ge(conf.minStoreLevel)
+
+	var stacktrace Stacktraces
+	if printStackTrace || storeStacktrace {
+		stacktrace = traceStack(conf.maxPC, newStacktraces(LevelError, msg...))
 	}
-	stacktrace := traceStack(conf.maxPC, msg...)
-	printStack(levelError, stacktrace)
+
+	if printStackTrace {
+		fmt.Println(stacktrace)
+	}
+	if storeStacktrace && conf.storage != nil {
+		goasync.Spawn(func(ctx context.Context) (any, error) {
+			conf.storage.Insert(LevelError, stacktrace)
+			return nil, nil
+		})
+	}
 }
 
 func ErrorWithMaxPC(maxPC uint, msg ...any) {
-	if !levelFilterDebug.le(conf.maxLevel) {
-		return
+	printStackTrace := LevelFilterError.ge(conf.minConsolePrintLevel)
+	storeStacktrace := LevelFilterError.ge(conf.minStoreLevel)
+
+	var stacktrace Stacktraces
+	if printStackTrace || storeStacktrace {
+		stacktrace = traceStack(conf.maxPC, newStacktraces(LevelError, msg...))
 	}
-	stacktrace := traceStack(maxPC, msg...)
-	printStack(levelError, stacktrace)
+
+	if printStackTrace {
+		fmt.Println(stacktrace)
+	}
+	if storeStacktrace && conf.storage != nil {
+		goasync.Spawn(func(ctx context.Context) (any, error) {
+			conf.storage.Insert(LevelError, stacktrace)
+			return nil, nil
+		})
+	}
 }

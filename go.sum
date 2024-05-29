@@ -1,3 +1,5 @@
+github.com/mnaufalhilmym/goasync v0.0.9 h1:MFZnFC9Nrjbq4r7+xtMkQdZso3SUFqSzfDuxMHVC1/8=
+github.com/mnaufalhilmym/goasync v0.0.9/go.mod h1:kqhmIFDAbOor3WD1HaIKyG4vCU2dhdXX5NbZkr80KXY=
 github.com/mnaufalhilmym/gooption v0.0.2 h1:pzEhqZSMEbGwTx8P2wIarNMt1AaJKYr7/nOtxAUdIQc=
 github.com/mnaufalhilmym/gooption v0.0.2/go.mod h1:iIIZc9buCd3Yy+u9UOqSu8M2l2p9vmwokdnRunF5eC0=
 github.com/mnaufalhilmym/goresult v0.0.4 h1:DFNox/3ik8F4gop10Py1gRShedN7rG+TDNy/yY0jopg=

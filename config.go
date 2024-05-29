@@ -1,17 +1,29 @@
 package gotracing
 
 type config struct {
-	maxLevel levelFilter
-	maxPC    uint
+	minConsolePrintLevel LevelFilter
+	minStoreLevel        LevelFilter
+	storage              storage
+	maxPC                uint
 }
 
 var conf = config{
-	maxLevel: levelFilterOff,
-	maxPC:    10,
+	minConsolePrintLevel: LevelFilterOff,
+	minStoreLevel:        LevelFilterOff,
+	storage:              nil,
+	maxPC:                10,
 }
 
-func SetMaxLevel(level levelFilter) {
-	conf.maxLevel = level
+func SetMinConsolePrintLevel(level LevelFilter) {
+	conf.minConsolePrintLevel = level
+}
+
+func SetMinStoreLevel(level LevelFilter) {
+	conf.minStoreLevel = level
+}
+
+func SetStorage(storage storage) {
+	conf.storage = storage
 }
 
 func SetMaxProgramCounters(count uint) {

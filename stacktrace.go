@@ -1,28 +1,44 @@
 package gotracing
 
 import (
-	"fmt"
 	"runtime"
-	"time"
 )
 
 type stacktrace struct {
+	kind string
 	msg  []any
 	file string
 	fn   string
 	line int
 }
 
-func traceStack(maxPC uint, msg ...any) []stacktrace {
+type Stacktraces []stacktrace
+
+func newStacktraces(level Level, msg ...any) Stacktraces {
+	kind := ""
+	switch level {
+	case 0: // trace
+		kind += termColorPurple + "TRACE" + termColorReset
+	case 1: // debug
+		kind += termColorBlue + "DEBUG" + termColorReset
+	case 2: // info
+		kind += termColorGreen + "INFO" + termColorReset
+	case 3: // warn
+		kind += termColorYellow + "WARN" + termColorReset
+	case 4: // error
+		kind += termColorRed + "ERROR" + termColorReset
+	}
+	return Stacktraces{{kind: kind, msg: msg}}
+}
+
+func traceStack(maxPC uint, stacks Stacktraces) Stacktraces {
 	pcs := make([]uintptr, maxPC)
 	pcEntries := runtime.Callers(3, pcs)
 	if pcEntries == 0 {
-		return nil
+		return stacks
 	}
 
 	frames := runtime.CallersFrames(pcs)
-
-	stacks := []stacktrace{{msg: msg}}
 
 	for {
 		frame, more := frames.Next()
@@ -39,27 +55,4 @@ func traceStack(maxPC uint, msg ...any) []stacktrace {
 	}
 
 	return stacks
-}
-
-func printStack(l level, st []stacktrace) {
-	kind := ""
-	switch l {
-	case 0: // trace
-		kind += termColorPurple + "TRACE" + termColorReset
-	case 1: // debug
-		kind += termColorBlue + "DEBUG" + termColorReset
-	case 2: // info
-		kind += termColorGreen + "INFO" + termColorReset
-	case 3: // warn
-		kind += termColorYellow + "WARN" + termColorReset
-	case 4: // error
-		kind += termColorRed + "ERROR" + termColorReset
-	}
-	for i, s := range st {
-		if s.msg != nil {
-			fmt.Printf("%s  %s: ", termColorComment+time.Now().Format(time.RFC3339)+termColorReset, kind)
-			fmt.Println(s.msg...)
-		}
-		fmt.Printf("  %d\tfunc: %s\n\tat %s:%d\n", i, s.fn, s.file, s.line)
-	}
 }

@@ -1,7 +1,9 @@
 package gotracing_test
 
 import (
+	"fmt"
 	"testing"
+	"time"
 
 	"github.com/mnaufalhilmym/gotracing"
 )
@@ -24,6 +26,13 @@ func recursionFuncMaxPC(x int, fn func(uint, ...any), maxPC uint, msg ...any) {
 	}
 }
 
+type storage struct{}
+
+func (storage) Insert(l gotracing.Level, s gotracing.Stacktraces) {
+	fmt.Println("level", l)
+	fmt.Println("trace", s)
+}
+
 func TestError(t *testing.T) {
 	levelFilterRes := gotracing.NewLevelFilter("error")
 	if levelFilterRes.IsErr() {
@@ -31,7 +40,7 @@ func TestError(t *testing.T) {
 		return
 	}
 
-	gotracing.SetMaxLevel(levelFilterRes.Unwrap())
+	gotracing.SetMinConsolePrintLevel(levelFilterRes.Unwrap())
 	gotracing.SetMaxProgramCounters(50)
 
 	recursionFunc(10, gotracing.Error, "Error", "ERROR")
@@ -40,7 +49,7 @@ func TestError(t *testing.T) {
 func TestWarn(t *testing.T) {
 	levelFilterOpt := gotracing.NewLevelFilter("warn")
 	if levelFilterOpt.IsOk() {
-		gotracing.SetMaxLevel(levelFilterOpt.Unwrap())
+		gotracing.SetMinConsolePrintLevel(levelFilterOpt.Unwrap())
 	} else {
 		t.Error("levelFilter must be Ok<T>")
 	}
@@ -53,7 +62,7 @@ func TestWarn(t *testing.T) {
 func TestInfoWithPC(t *testing.T) {
 	levelFilterOpt := gotracing.NewLevelFilter("info")
 	if levelFilterOpt.IsOk() {
-		gotracing.SetMaxLevel(levelFilterOpt.Unwrap())
+		gotracing.SetMinConsolePrintLevel(levelFilterOpt.Unwrap())
 	} else {
 		t.Error("levelFilter must be Ok<T>")
 	}
@@ -64,10 +73,38 @@ func TestInfoWithPC(t *testing.T) {
 func TestDebugWithPC(t *testing.T) {
 	levelFilterOpt := gotracing.NewLevelFilter("debug")
 	if levelFilterOpt.IsOk() {
-		gotracing.SetMaxLevel(levelFilterOpt.Unwrap())
+		gotracing.SetMinConsolePrintLevel(levelFilterOpt.Unwrap())
 	} else {
 		t.Error("levelFilter must be Ok<T>")
 	}
 
-	recursionFuncMaxPC(10, gotracing.DebugWithMaxPC, 0, "Info", "INFO")
+	recursionFuncMaxPC(10, gotracing.DebugWithMaxPC, 0, "debug", "DEBUG")
+}
+
+func TestSetMinStoreLevel(t *testing.T) {
+	levelFilterOpt := gotracing.NewLevelFilter("debug")
+	if levelFilterOpt.IsOk() {
+		gotracing.SetMinConsolePrintLevel(levelFilterOpt.Unwrap())
+		gotracing.SetMinStoreLevel(levelFilterOpt.Unwrap())
+	} else {
+		t.Error("levelFilter must be Ok<T>")
+	}
+
+	recursionFuncMaxPC(10, gotracing.DebugWithMaxPC, 10, "debug", "DEBUG")
+	time.Sleep(1 * time.Second)
+}
+
+func TestStorage(t *testing.T) {
+	levelFilterOpt := gotracing.NewLevelFilter("debug")
+	if levelFilterOpt.IsOk() {
+		gotracing.SetMinConsolePrintLevel(levelFilterOpt.Unwrap())
+		gotracing.SetMinStoreLevel(levelFilterOpt.Unwrap())
+	} else {
+		t.Error("levelFilter must be Ok<T>")
+	}
+	storage := storage{}
+	gotracing.SetStorage(storage)
+
+	recursionFuncMaxPC(10, gotracing.DebugWithMaxPC, 10, "debug", "DEBUG")
+	time.Sleep(1 * time.Second)
 }
