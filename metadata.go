@@ -38,21 +38,10 @@ const LevelError Level = 4
 type LevelFilter struct{ gooption.Option[Level] }
 
 func (f LevelFilter) ge(filter LevelFilter) bool {
-	if f.IsSome() {
-		fl := f.Unwrap()
-		if filter.IsSome() {
-			filterLevel := filter.Unwrap()
-			return fl >= filterLevel
-		} else {
-			return true
-		}
-	} else {
-		if filter.IsSome() {
-			return false
-		} else {
-			return true
-		}
+	if f.IsSome() && filter.IsSome() {
+		return f.Unwrap() >= filter.Unwrap()
 	}
+	return false
 }
 
 // The "off" level.

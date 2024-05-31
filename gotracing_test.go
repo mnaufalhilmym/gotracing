@@ -115,6 +115,7 @@ func TestLevel(t *testing.T) {
 	gotracing.ErrorWithMaxPC(0, "test-error")
 	gotracing.SetMinConsolePrintLevel(gotracing.LevelFilterInfo)
 	gotracing.TraceWithMaxPC(0, "test-trace")
+	gotracing.InfoWithMaxPC(0, "test-info2")
 	gotracing.ErrorWithMaxPC(0, "test-error2")
 	gotracing.SetMinConsolePrintLevel(gotracing.LevelFilterError)
 	gotracing.InfoWithMaxPC(0, "test-info2")
