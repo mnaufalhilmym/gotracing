@@ -8,8 +8,8 @@ import (
 )
 
 func Trace(msg ...any) {
-	printStackTrace := LevelFilterTrace.ge(conf.minConsolePrintLevel)
-	storeStacktrace := LevelFilterTrace.ge(conf.minStoreLevel)
+	printStackTrace := conf.minConsolePrintLevel.ge(LevelFilterTrace)
+	storeStacktrace := conf.minStoreLevel.ge(LevelFilterTrace)
 
 	var stacktrace Stacktraces
 	if printStackTrace || storeStacktrace {
@@ -28,8 +28,8 @@ func Trace(msg ...any) {
 }
 
 func TraceWithMaxPC(maxPC uint, msg ...any) {
-	printStackTrace := LevelFilterTrace.ge(conf.minConsolePrintLevel)
-	storeStacktrace := LevelFilterTrace.ge(conf.minStoreLevel)
+	printStackTrace := conf.minConsolePrintLevel.ge(LevelFilterTrace)
+	storeStacktrace := conf.minStoreLevel.ge(LevelFilterTrace)
 
 	var stacktrace Stacktraces
 	if printStackTrace || storeStacktrace {
@@ -48,8 +48,8 @@ func TraceWithMaxPC(maxPC uint, msg ...any) {
 }
 
 func Debug(msg ...any) {
-	printStackTrace := LevelFilterDebug.ge(conf.minConsolePrintLevel)
-	storeStacktrace := LevelFilterDebug.ge(conf.minStoreLevel)
+	printStackTrace := conf.minConsolePrintLevel.ge(LevelFilterDebug)
+	storeStacktrace := conf.minStoreLevel.ge(LevelFilterDebug)
 
 	var stacktrace Stacktraces
 	if printStackTrace || storeStacktrace {
@@ -68,8 +68,8 @@ func Debug(msg ...any) {
 }
 
 func DebugWithMaxPC(maxPC uint, msg ...any) {
-	printStackTrace := LevelFilterDebug.ge(conf.minConsolePrintLevel)
-	storeStacktrace := LevelFilterDebug.ge(conf.minStoreLevel)
+	printStackTrace := conf.minConsolePrintLevel.ge(LevelFilterDebug)
+	storeStacktrace := conf.minStoreLevel.ge(LevelFilterDebug)
 
 	var stacktrace Stacktraces
 	if printStackTrace || storeStacktrace {
@@ -88,8 +88,8 @@ func DebugWithMaxPC(maxPC uint, msg ...any) {
 }
 
 func Info(msg ...any) {
-	printStackTrace := LevelFilterInfo.ge(conf.minConsolePrintLevel)
-	storeStacktrace := LevelFilterInfo.ge(conf.minStoreLevel)
+	printStackTrace := conf.minConsolePrintLevel.ge(LevelFilterInfo)
+	storeStacktrace := conf.minStoreLevel.ge(LevelFilterInfo)
 
 	var stacktrace Stacktraces
 	if printStackTrace || storeStacktrace {
@@ -108,8 +108,8 @@ func Info(msg ...any) {
 }
 
 func InfoWithMaxPC(maxPC uint, msg ...any) {
-	printStackTrace := LevelFilterInfo.ge(conf.minConsolePrintLevel)
-	storeStacktrace := LevelFilterInfo.ge(conf.minStoreLevel)
+	printStackTrace := conf.minConsolePrintLevel.ge(LevelFilterInfo)
+	storeStacktrace := conf.minStoreLevel.ge(LevelFilterInfo)
 
 	var stacktrace Stacktraces
 	if printStackTrace || storeStacktrace {
@@ -128,8 +128,8 @@ func InfoWithMaxPC(maxPC uint, msg ...any) {
 }
 
 func Warn(msg ...any) {
-	printStackTrace := LevelFilterWarn.ge(conf.minConsolePrintLevel)
-	storeStacktrace := LevelFilterWarn.ge(conf.minStoreLevel)
+	printStackTrace := conf.minConsolePrintLevel.ge(LevelFilterWarn)
+	storeStacktrace := conf.minStoreLevel.ge(LevelFilterWarn)
 
 	var stacktrace Stacktraces
 	if printStackTrace || storeStacktrace {
@@ -148,8 +148,8 @@ func Warn(msg ...any) {
 }
 
 func WarnWithMaxPC(maxPC uint, msg ...any) {
-	printStackTrace := LevelFilterWarn.ge(conf.minConsolePrintLevel)
-	storeStacktrace := LevelFilterWarn.ge(conf.minStoreLevel)
+	printStackTrace := conf.minConsolePrintLevel.ge(LevelFilterWarn)
+	storeStacktrace := conf.minStoreLevel.ge(LevelFilterWarn)
 
 	var stacktrace Stacktraces
 	if printStackTrace || storeStacktrace {
@@ -168,8 +168,8 @@ func WarnWithMaxPC(maxPC uint, msg ...any) {
 }
 
 func Error(msg ...any) {
-	printStackTrace := LevelFilterError.ge(conf.minConsolePrintLevel)
-	storeStacktrace := LevelFilterError.ge(conf.minStoreLevel)
+	printStackTrace := conf.minConsolePrintLevel.ge(LevelFilterError)
+	storeStacktrace := conf.minStoreLevel.ge(LevelFilterError)
 
 	var stacktrace Stacktraces
 	if printStackTrace || storeStacktrace {
@@ -188,12 +188,12 @@ func Error(msg ...any) {
 }
 
 func ErrorWithMaxPC(maxPC uint, msg ...any) {
-	printStackTrace := LevelFilterError.ge(conf.minConsolePrintLevel)
-	storeStacktrace := LevelFilterError.ge(conf.minStoreLevel)
+	printStackTrace := conf.minConsolePrintLevel.ge(LevelFilterError)
+	storeStacktrace := conf.minStoreLevel.ge(LevelFilterError)
 
 	var stacktrace Stacktraces
 	if printStackTrace || storeStacktrace {
-		stacktrace = traceStack(conf.maxPC, Stacktraces{{level: LevelError, msg: msg}})
+		stacktrace = traceStack(maxPC, Stacktraces{{level: LevelError, msg: msg}})
 	}
 
 	if printStackTrace {

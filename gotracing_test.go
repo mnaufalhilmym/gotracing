@@ -108,3 +108,15 @@ func TestStorage(t *testing.T) {
 	recursionFuncMaxPC(10, gotracing.DebugWithMaxPC, 10, "debug", "DEBUG")
 	time.Sleep(1 * time.Second)
 }
+
+func TestLevel(t *testing.T) {
+	gotracing.SetMinConsolePrintLevel(gotracing.LevelFilterOff)
+	gotracing.InfoWithMaxPC(0, "test-info")
+	gotracing.ErrorWithMaxPC(0, "test-error")
+	gotracing.SetMinConsolePrintLevel(gotracing.LevelFilterInfo)
+	gotracing.TraceWithMaxPC(0, "test-trace")
+	gotracing.ErrorWithMaxPC(0, "test-error2")
+	gotracing.SetMinConsolePrintLevel(gotracing.LevelFilterError)
+	gotracing.InfoWithMaxPC(0, "test-info2")
+	gotracing.ErrorWithMaxPC(0, "test-error3")
+}
