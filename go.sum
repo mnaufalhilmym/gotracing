@@ -4,3 +4,5 @@ github.com/mnaufalhilmym/gooption v0.0.2 h1:pzEhqZSMEbGwTx8P2wIarNMt1AaJKYr7/nOt
 github.com/mnaufalhilmym/gooption v0.0.2/go.mod h1:iIIZc9buCd3Yy+u9UOqSu8M2l2p9vmwokdnRunF5eC0=
 github.com/mnaufalhilmym/goresult v0.0.4 h1:DFNox/3ik8F4gop10Py1gRShedN7rG+TDNy/yY0jopg=
 github.com/mnaufalhilmym/goresult v0.0.4/go.mod h1:HZ7MaeAA167j1oFwSrN1aV5+d9chApMYgVEZS2hUyss=
+golang.org/x/sys v0.21.0 h1:rF+pYz3DAGSQAxAu1CbC7catZg4ebC4UIeIhKxBZvws=
+golang.org/x/sys v0.21.0/go.mod h1:/VUhepiaJMQUp4+oa/7Zr1D23ma6VTLIYjOOTFZPUcA=
