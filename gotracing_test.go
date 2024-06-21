@@ -28,9 +28,9 @@ func recursionFuncMaxPC(x int, fn func(uint, ...any), maxPC uint, msg ...any) {
 
 type storage struct{}
 
-func (storage) Insert(l gotracing.Level, s gotracing.Stacktraces) {
-	fmt.Println("level", l)
-	fmt.Println("trace", s)
+func (storage) Insert(l gotracing.Level, s gotracing.Traces) {
+	fmt.Println("insert level", l)
+	fmt.Println("insert trace", s)
 }
 
 func TestError(t *testing.T) {
@@ -67,7 +67,7 @@ func TestInfoWithPC(t *testing.T) {
 		t.Error("levelFilter must be Ok<T>")
 	}
 
-	recursionFuncMaxPC(10, gotracing.InfoWithMaxPC, 1, "Info", "INFO")
+	recursionFuncMaxPC(10, gotracing.InfoPC, 1, "Info", "INFO")
 }
 
 func TestDebugWithPC(t *testing.T) {
@@ -78,7 +78,7 @@ func TestDebugWithPC(t *testing.T) {
 		t.Error("levelFilter must be Ok<T>")
 	}
 
-	recursionFuncMaxPC(10, gotracing.DebugWithMaxPC, 0, "debug", "DEBUG")
+	recursionFuncMaxPC(10, gotracing.DebugPC, 0, "debug", "DEBUG")
 }
 
 func TestSetMinStoreLevel(t *testing.T) {
@@ -90,7 +90,7 @@ func TestSetMinStoreLevel(t *testing.T) {
 		t.Error("levelFilter must be Ok<T>")
 	}
 
-	recursionFuncMaxPC(10, gotracing.DebugWithMaxPC, 10, "debug", "DEBUG")
+	recursionFuncMaxPC(10, gotracing.DebugPC, 10, "debug", "DEBUG")
 	time.Sleep(1 * time.Second)
 }
 
@@ -105,19 +105,19 @@ func TestStorage(t *testing.T) {
 	storage := storage{}
 	gotracing.SetStorage(storage)
 
-	recursionFuncMaxPC(10, gotracing.DebugWithMaxPC, 10, "debug", "DEBUG")
+	recursionFuncMaxPC(10, gotracing.DebugPC, 10, "debug", "DEBUG")
 	time.Sleep(1 * time.Second)
 }
 
 func TestLevel(t *testing.T) {
 	gotracing.SetMinConsolePrintLevel(gotracing.LevelFilterOff)
-	gotracing.InfoWithMaxPC(0, "test-info")
-	gotracing.ErrorWithMaxPC(0, "test-error")
+	gotracing.InfoPC(0, "test-info")
+	gotracing.ErrorPC(0, "test-error")
 	gotracing.SetMinConsolePrintLevel(gotracing.LevelFilterInfo)
-	gotracing.TraceWithMaxPC(0, "test-trace")
-	gotracing.InfoWithMaxPC(0, "test-info2")
-	gotracing.ErrorWithMaxPC(0, "test-error2")
+	gotracing.TracePC(0, "test-trace")
+	gotracing.InfoPC(0, "test-info2")
+	gotracing.ErrorPC(0, "test-error2")
 	gotracing.SetMinConsolePrintLevel(gotracing.LevelFilterError)
-	gotracing.InfoWithMaxPC(0, "test-info2")
-	gotracing.ErrorWithMaxPC(0, "test-error3")
+	gotracing.InfoPC(0, "test-info2")
+	gotracing.Error("test-error3")
 }

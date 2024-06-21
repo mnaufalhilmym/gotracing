@@ -4,38 +4,43 @@ import (
 	"runtime"
 )
 
-type stacktrace struct {
-	level Level
-	msg   []any
-	file  string
-	fn    string
-	line  int
+type Traces struct {
+	level       Level
+	msg         []any
+	stacktraces []stacktrace
 }
 
-type Stacktraces []stacktrace
+type stacktrace struct {
+	file string
+	fn   string
+	line int
+}
 
-func traceStack(maxPC uint, stacks Stacktraces) Stacktraces {
+func traceStack(maxPC uint, traces Traces) Traces {
 	pcs := make([]uintptr, maxPC)
 	pcEntries := runtime.Callers(3, pcs)
 	if pcEntries == 0 {
-		return stacks
+		return traces
 	}
 
-	frames := runtime.CallersFrames(pcs)
+	stacks := make([]stacktrace, 0, maxPC)
 
+	frames := runtime.CallersFrames(pcs)
 	for {
 		frame, more := frames.Next()
 
-		stacks[len(stacks)-1].file = frame.File
-		stacks[len(stacks)-1].fn = frame.Func.Name()
-		stacks[len(stacks)-1].line = frame.Line
+		stacks = append(stacks, stacktrace{
+			file: frame.File,
+			fn:   frame.Func.Name(),
+			line: frame.Line,
+		})
 
-		if more {
-			stacks = append(stacks, stacktrace{})
-		} else {
+		if !more {
 			break
 		}
 	}
 
-	return stacks
+	traces.stacktraces = stacks
+
+	return traces
 }

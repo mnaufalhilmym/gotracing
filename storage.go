@@ -1,5 +1,5 @@
 package gotracing
 
 type storage interface {
-	Insert(Level, Stacktraces)
+	Insert(Level, Traces)
 }
