@@ -103,7 +103,7 @@ func TracePCF(maxPC uint, msg ...any) {
 
 // The "debug" level.
 //
-//	Designates lower priority information.
+// Designates lower priority information.
 func Debug(msg ...any) {
 	printTrace := LevelFilterDebug.ge(conf.minConsolePrintLevel)
 	storeTrace := LevelFilterDebug.ge(conf.minStoreLevel)
@@ -127,7 +127,7 @@ func Debug(msg ...any) {
 
 // The "debug" level with forced stack trace.
 //
-//	Designates lower priority information.
+// Designates lower priority information.
 func DebugF(msg ...any) {
 	printTrace := LevelFilterDebug.ge(conf.minConsolePrintLevel)
 	storeTrace := LevelFilterDebug.ge(conf.minStoreLevel)
@@ -150,7 +150,7 @@ func DebugF(msg ...any) {
 
 // The "debug" level with maxPC.
 //
-//	Designates lower priority information.
+// Designates lower priority information.
 func DebugPC(maxPC uint, msg ...any) {
 	printTrace := LevelFilterDebug.ge(conf.minConsolePrintLevel)
 	storeTrace := LevelFilterDebug.ge(conf.minStoreLevel)
@@ -174,7 +174,7 @@ func DebugPC(maxPC uint, msg ...any) {
 
 // The "debug" level with maxPC and forced stack trace.
 //
-//	Designates lower priority information.
+// Designates lower priority information.
 func DebugPCF(maxPC uint, msg ...any) {
 	printTrace := LevelFilterDebug.ge(conf.minConsolePrintLevel)
 	storeTrace := LevelFilterDebug.ge(conf.minStoreLevel)

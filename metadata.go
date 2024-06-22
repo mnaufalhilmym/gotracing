@@ -66,7 +66,7 @@ var LevelFilterInfo = LevelFilter{gooption.Some(LevelInfo)}
 
 // The "debug" level.
 //
-//	Designates lower priority information.
+// Designates lower priority information.
 var LevelFilterDebug = LevelFilter{gooption.Some(LevelDebug)}
 
 // The "trace" level.
