@@ -1,10 +1,7 @@
 package gotracing
 
 import (
-	"context"
 	"fmt"
-
-	"github.com/mnaufalhilmym/goasync"
 )
 
 // The "trace" level.
@@ -24,10 +21,28 @@ func Trace(msg ...any) {
 		fmt.Println(traces)
 	}
 	if storeTrace && conf.storage != nil {
-		goasync.Spawn(func(ctx context.Context) (any, error) {
-			conf.storage.Insert(LevelTrace, traces)
-			return nil, nil
-		})
+		go conf.storage.Insert(LevelTrace, traces)
+	}
+}
+
+// The "trace" level with message formatting.
+//
+// Designates very low priority, often extremely verbose, information.
+func Tracef(format string, a ...any) {
+	printTrace := LevelFilterTrace.ge(conf.minConsolePrintLevel)
+	storeTrace := LevelFilterTrace.ge(conf.minStoreLevel)
+	generateStackTrace := LevelFilterTrace.ge(conf.minStackTrace)
+
+	traces := Traces{level: LevelTrace, msg: []any{fmt.Sprintf(format, a...)}}
+	if (printTrace || storeTrace) && generateStackTrace {
+		traces = traceStack(conf.maxPC, traces)
+	}
+
+	if printTrace {
+		fmt.Println(traces)
+	}
+	if storeTrace && conf.storage != nil {
+		go conf.storage.Insert(LevelTrace, traces)
 	}
 }
 
@@ -47,10 +62,7 @@ func TraceF(msg ...any) {
 		fmt.Println(traces)
 	}
 	if storeTrace && conf.storage != nil {
-		goasync.Spawn(func(ctx context.Context) (any, error) {
-			conf.storage.Insert(LevelTrace, traces)
-			return nil, nil
-		})
+		go conf.storage.Insert(LevelTrace, traces)
 	}
 }
 
@@ -71,10 +83,7 @@ func TracePC(maxPC uint, msg ...any) {
 		fmt.Println(traces)
 	}
 	if storeTrace && conf.storage != nil {
-		goasync.Spawn(func(ctx context.Context) (any, error) {
-			conf.storage.Insert(LevelTrace, traces)
-			return nil, nil
-		})
+		go conf.storage.Insert(LevelTrace, traces)
 	}
 }
 
@@ -94,10 +103,7 @@ func TracePCF(maxPC uint, msg ...any) {
 		fmt.Println(traces)
 	}
 	if storeTrace && conf.storage != nil {
-		goasync.Spawn(func(ctx context.Context) (any, error) {
-			conf.storage.Insert(LevelTrace, traces)
-			return nil, nil
-		})
+		go conf.storage.Insert(LevelTrace, traces)
 	}
 }
 
@@ -118,10 +124,28 @@ func Debug(msg ...any) {
 		fmt.Println(traces)
 	}
 	if storeTrace && conf.storage != nil {
-		goasync.Spawn(func(ctx context.Context) (any, error) {
-			conf.storage.Insert(LevelDebug, traces)
-			return nil, nil
-		})
+		go conf.storage.Insert(LevelDebug, traces)
+	}
+}
+
+// The "debug" level with message formatting.
+//
+// Designates lower priority information.
+func Debugf(format string, a ...any) {
+	printTrace := LevelFilterDebug.ge(conf.minConsolePrintLevel)
+	storeTrace := LevelFilterDebug.ge(conf.minStoreLevel)
+	generateStackTrace := LevelFilterDebug.ge(conf.minStackTrace)
+
+	traces := Traces{level: LevelDebug, msg: []any{fmt.Sprintf(format, a...)}}
+	if (printTrace || storeTrace) && generateStackTrace {
+		traces = traceStack(conf.maxPC, traces)
+	}
+
+	if printTrace {
+		fmt.Println(traces)
+	}
+	if storeTrace && conf.storage != nil {
+		go conf.storage.Insert(LevelDebug, traces)
 	}
 }
 
@@ -141,10 +165,7 @@ func DebugF(msg ...any) {
 		fmt.Println(traces)
 	}
 	if storeTrace && conf.storage != nil {
-		goasync.Spawn(func(ctx context.Context) (any, error) {
-			conf.storage.Insert(LevelDebug, traces)
-			return nil, nil
-		})
+		go conf.storage.Insert(LevelDebug, traces)
 	}
 }
 
@@ -165,10 +186,7 @@ func DebugPC(maxPC uint, msg ...any) {
 		fmt.Println(traces)
 	}
 	if storeTrace && conf.storage != nil {
-		goasync.Spawn(func(ctx context.Context) (any, error) {
-			conf.storage.Insert(LevelDebug, traces)
-			return nil, nil
-		})
+		go conf.storage.Insert(LevelDebug, traces)
 	}
 }
 
@@ -188,10 +206,7 @@ func DebugPCF(maxPC uint, msg ...any) {
 		fmt.Println(traces)
 	}
 	if storeTrace && conf.storage != nil {
-		goasync.Spawn(func(ctx context.Context) (any, error) {
-			conf.storage.Insert(LevelDebug, traces)
-			return nil, nil
-		})
+		go conf.storage.Insert(LevelDebug, traces)
 	}
 }
 
@@ -212,10 +227,28 @@ func Info(msg ...any) {
 		fmt.Println(traces)
 	}
 	if storeTrace && conf.storage != nil {
-		goasync.Spawn(func(ctx context.Context) (any, error) {
-			conf.storage.Insert(LevelInfo, traces)
-			return nil, nil
-		})
+		go conf.storage.Insert(LevelInfo, traces)
+	}
+}
+
+// The "info" level with message formatting.
+//
+// Designates useful information.
+func Infof(format string, a ...any) {
+	printTrace := LevelFilterInfo.ge(conf.minConsolePrintLevel)
+	storeTrace := LevelFilterInfo.ge(conf.minStoreLevel)
+	generateStackTrace := LevelFilterInfo.ge(conf.minStackTrace)
+
+	traces := Traces{level: LevelInfo, msg: []any{fmt.Sprintf(format, a...)}}
+	if (printTrace || storeTrace) && generateStackTrace {
+		traces = traceStack(conf.maxPC, traces)
+	}
+
+	if printTrace {
+		fmt.Println(traces)
+	}
+	if storeTrace && conf.storage != nil {
+		go conf.storage.Insert(LevelInfo, traces)
 	}
 }
 
@@ -235,10 +268,7 @@ func InfoF(msg ...any) {
 		fmt.Println(traces)
 	}
 	if storeTrace && conf.storage != nil {
-		goasync.Spawn(func(ctx context.Context) (any, error) {
-			conf.storage.Insert(LevelInfo, traces)
-			return nil, nil
-		})
+		go conf.storage.Insert(LevelInfo, traces)
 	}
 }
 
@@ -259,10 +289,7 @@ func InfoPC(maxPC uint, msg ...any) {
 		fmt.Println(traces)
 	}
 	if storeTrace && conf.storage != nil {
-		goasync.Spawn(func(ctx context.Context) (any, error) {
-			conf.storage.Insert(LevelInfo, traces)
-			return nil, nil
-		})
+		go conf.storage.Insert(LevelInfo, traces)
 	}
 }
 
@@ -282,10 +309,7 @@ func InfoPCF(maxPC uint, msg ...any) {
 		fmt.Println(traces)
 	}
 	if storeTrace && conf.storage != nil {
-		goasync.Spawn(func(ctx context.Context) (any, error) {
-			conf.storage.Insert(LevelInfo, traces)
-			return nil, nil
-		})
+		go conf.storage.Insert(LevelInfo, traces)
 	}
 }
 
@@ -306,10 +330,28 @@ func Warn(msg ...any) {
 		fmt.Println(traces)
 	}
 	if storeTrace && conf.storage != nil {
-		goasync.Spawn(func(ctx context.Context) (any, error) {
-			conf.storage.Insert(LevelWarn, traces)
-			return nil, nil
-		})
+		go conf.storage.Insert(LevelWarn, traces)
+	}
+}
+
+// The "warn" level with message formatting.
+//
+// Designates hazardous situations.
+func Warnf(format string, a ...any) {
+	printTrace := LevelFilterWarn.ge(conf.minConsolePrintLevel)
+	storeTrace := LevelFilterWarn.ge(conf.minStoreLevel)
+	generateStackTrace := LevelFilterWarn.ge(conf.minStackTrace)
+
+	traces := Traces{level: LevelWarn, msg: []any{fmt.Sprintf(format, a...)}}
+	if (printTrace || storeTrace) && generateStackTrace {
+		traces = traceStack(conf.maxPC, traces)
+	}
+
+	if printTrace {
+		fmt.Println(traces)
+	}
+	if storeTrace && conf.storage != nil {
+		go conf.storage.Insert(LevelWarn, traces)
 	}
 }
 
@@ -329,10 +371,7 @@ func WarnF(msg ...any) {
 		fmt.Println(traces)
 	}
 	if storeTrace && conf.storage != nil {
-		goasync.Spawn(func(ctx context.Context) (any, error) {
-			conf.storage.Insert(LevelWarn, traces)
-			return nil, nil
-		})
+		go conf.storage.Insert(LevelWarn, traces)
 	}
 }
 
@@ -353,10 +392,7 @@ func WarnPC(maxPC uint, msg ...any) {
 		fmt.Println(traces)
 	}
 	if storeTrace && conf.storage != nil {
-		goasync.Spawn(func(ctx context.Context) (any, error) {
-			conf.storage.Insert(LevelWarn, traces)
-			return nil, nil
-		})
+		go conf.storage.Insert(LevelWarn, traces)
 	}
 }
 
@@ -376,10 +412,7 @@ func WarnPCF(maxPC uint, msg ...any) {
 		fmt.Println(traces)
 	}
 	if storeTrace && conf.storage != nil {
-		goasync.Spawn(func(ctx context.Context) (any, error) {
-			conf.storage.Insert(LevelWarn, traces)
-			return nil, nil
-		})
+		go conf.storage.Insert(LevelWarn, traces)
 	}
 }
 
@@ -400,10 +433,28 @@ func Error(msg ...any) {
 		fmt.Println(traces)
 	}
 	if storeTrace && conf.storage != nil {
-		goasync.Spawn(func(ctx context.Context) (any, error) {
-			conf.storage.Insert(LevelError, traces)
-			return nil, nil
-		})
+		go conf.storage.Insert(LevelError, traces)
+	}
+}
+
+// The "error" level with message formatting.
+//
+// Designates very serious errors.
+func Errorf(format string, a ...any) {
+	printTrace := LevelFilterError.ge(conf.minConsolePrintLevel)
+	storeTrace := LevelFilterError.ge(conf.minStoreLevel)
+	generateStackTrace := LevelFilterError.ge(conf.minStackTrace)
+
+	traces := Traces{level: LevelError, msg: []any{fmt.Sprintf(format, a...)}}
+	if (printTrace || storeTrace) && generateStackTrace {
+		traces = traceStack(conf.maxPC, traces)
+	}
+
+	if printTrace {
+		fmt.Println(traces)
+	}
+	if storeTrace && conf.storage != nil {
+		go conf.storage.Insert(LevelError, traces)
 	}
 }
 
@@ -423,10 +474,7 @@ func ErrorF(msg ...any) {
 		fmt.Println(traces)
 	}
 	if storeTrace && conf.storage != nil {
-		goasync.Spawn(func(ctx context.Context) (any, error) {
-			conf.storage.Insert(LevelError, traces)
-			return nil, nil
-		})
+		go conf.storage.Insert(LevelError, traces)
 	}
 }
 
@@ -447,10 +495,7 @@ func ErrorPC(maxPC uint, msg ...any) {
 		fmt.Println(traces)
 	}
 	if storeTrace && conf.storage != nil {
-		goasync.Spawn(func(ctx context.Context) (any, error) {
-			conf.storage.Insert(LevelError, traces)
-			return nil, nil
-		})
+		go conf.storage.Insert(LevelError, traces)
 	}
 }
 
@@ -470,9 +515,6 @@ func ErrorPCF(maxPC uint, msg ...any) {
 		fmt.Println(traces)
 	}
 	if storeTrace && conf.storage != nil {
-		goasync.Spawn(func(ctx context.Context) (any, error) {
-			conf.storage.Insert(LevelError, traces)
-			return nil, nil
-		})
+		go conf.storage.Insert(LevelError, traces)
 	}
 }
